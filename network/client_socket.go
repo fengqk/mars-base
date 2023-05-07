@@ -8,7 +8,6 @@ import (
 
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
-
 	"github.com/xtaci/kcp-go"
 )
 

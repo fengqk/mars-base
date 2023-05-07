@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"mars-base/rpc"
 	"sync/atomic"
 	"time"
 
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/common/timer"
+	"github.com/fengqk/mars-base/rpc"
 )
 
 type (

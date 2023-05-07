@@ -8,7 +8,6 @@ import (
 	"sync/atomic"
 
 	"github.com/fengqk/mars-base/rpc"
-
 	"golang.org/x/net/websocket"
 )
 

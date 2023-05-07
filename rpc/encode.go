@@ -5,7 +5,6 @@ import (
 	"encoding/gob"
 
 	"github.com/fengqk/mars-base/common"
-
 	"github.com/golang/protobuf/proto"
 )
 

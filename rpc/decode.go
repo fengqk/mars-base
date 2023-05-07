@@ -8,7 +8,6 @@ import (
 	reflect "reflect"
 
 	"github.com/fengqk/mars-base/common"
-
 	"github.com/golang/protobuf/proto"
 )
 
