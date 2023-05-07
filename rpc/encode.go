@@ -3,7 +3,8 @@ package rpc
 import (
 	"bytes"
 	"encoding/gob"
-	"mars-base/common"
+
+	"github.com/fengqk/mars-base/common"
 
 	"github.com/golang/protobuf/proto"
 )

@@ -5,8 +5,9 @@ import (
 	"context"
 	"encoding/gob"
 	"errors"
-	"mars-base/common"
 	reflect "reflect"
+
+	"github.com/fengqk/mars-base/common"
 
 	"github.com/golang/protobuf/proto"
 )

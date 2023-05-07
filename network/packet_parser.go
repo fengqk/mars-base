@@ -3,7 +3,8 @@ package network
 import (
 	"encoding/binary"
 	"fmt"
-	"mars-base/common"
+
+	"github.com/fengqk/mars-base/common"
 )
 
 const (

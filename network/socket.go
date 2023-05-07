@@ -1,10 +1,11 @@
 package network
 
 import (
-	"mars-base/common/vector"
-	"mars-base/rpc"
 	"net"
 	"sync/atomic"
+
+	"github.com/fengqk/mars-base/common/vector"
+	"github.com/fengqk/mars-base/rpc"
 )
 
 const (

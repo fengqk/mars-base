@@ -2,10 +2,11 @@ package actor
 
 import (
 	"log"
-	"mars-base/common"
-	"mars-base/network"
-	"mars-base/rpc"
 	"reflect"
+
+	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/network"
+	"github.com/fengqk/mars-base/rpc"
 )
 
 var (

@@ -3,10 +3,11 @@ package network
 import (
 	"fmt"
 	"log"
-	"mars-base/rpc"
 	"net"
 	"sync"
 	"sync/atomic"
+
+	"github.com/fengqk/mars-base/rpc"
 
 	"github.com/xtaci/kcp-go"
 )

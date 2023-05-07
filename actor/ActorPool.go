@@ -1,9 +1,10 @@
 package actor
 
 import (
-	"mars-base/common"
-	"mars-base/rpc"
 	"reflect"
+
+	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/rpc"
 )
 
 type (

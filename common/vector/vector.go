@@ -1,6 +1,6 @@
 package vector
 
-import "mars-base/common"
+import "github.com/fengqk/mars-base/common"
 
 const (
 	VectorBlockSize = 16

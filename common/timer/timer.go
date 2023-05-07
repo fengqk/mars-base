@@ -1,10 +1,11 @@
 package timer
 
 import (
-	"mars-base/common"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/fengqk/mars-base/common"
 )
 
 const (

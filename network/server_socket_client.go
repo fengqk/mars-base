@@ -5,11 +5,12 @@ import (
 	"hash/crc32"
 	"io"
 	"log"
-	"mars-base/common"
-	"mars-base/common/timer"
-	"mars-base/rpc"
 	"sync/atomic"
 	"time"
+
+	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/common/timer"
+	"github.com/fengqk/mars-base/rpc"
 )
 
 const (

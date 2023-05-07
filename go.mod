@@ -1,9 +1,9 @@
-module mars-base
+module github.com/fengqk/mars-base
 
 go 1.20
 
 require (
-	github.com/golang/protobuf v1.5.0
+	github.com/golang/protobuf v1.5.3
 	github.com/gomodule/redigo v1.8.9
 	github.com/xtaci/kcp-go v4.3.4+incompatible
 	golang.org/x/net v0.9.0
