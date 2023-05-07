@@ -2,12 +2,15 @@ package actor
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"mars-base/common"
 	"mars-base/common/mpsc"
 	"mars-base/common/timer"
 	"mars-base/rpc"
 	"reflect"
+	"runtime"
+	"strings"
 	"sync/atomic"
 	"time"
 )
@@ -206,20 +209,16 @@ func (a *Actor) HasRpc(funcName string) bool {
 }
 
 func (a *Actor) UpdateTimer(ctx context.Context, ptr uintptr) {
-	func, isEx := a.timerMap[ptr]
+	fun, isEx := a.timerMap[ptr]
 	if isEx {
 		a.Trace("timer")
-		(func)()
+		(fun)()
 		a.Trace("")
 	}
 }
 
 func (a *Actor) Actor() *Actor {
 	return a
-}
-
-func (a *Actor) Trace(funcName string) {
-	a.trace.funcName = funcName
 }
 
 func (a *Actor) setState(state int32) {
@@ -314,13 +313,13 @@ func (a *Actor) call(io *CallIO) {
 }
 
 func (a *TraceInfo) Init() {
-	_,file,_,bOk := runtime.Caller(2)
+	_, file, _, bOk := runtime.Caller(2)
 	if bOk {
-		index := strings.LastIndex(file,"/")
+		index := strings.LastIndex(file, "/")
 		if index != -1 {
 			a.fileName = file[index+1:]
 			a.filePath = file[:index]
-			index2 := strings.LastIndex(a.fileName,".")
+			index2 := strings.LastIndex(a.fileName, ".")
 			if index2 != -1 {
 				a.className = strings.ToLower(a.fileName[:index2])
 			}
@@ -329,7 +328,7 @@ func (a *TraceInfo) Init() {
 }
 
 func (a *TraceInfo) ToString() string {
-	return fmt.Sprintf("trace go file %s call %s\n", a.fileName,a.funcName)
+	return fmt.Sprintf("trace go file %s call %s\n", a.fileName, a.funcName)
 }
 
 func (op *Op) applyOpts(opts []OpOption) {

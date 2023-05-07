@@ -7,6 +7,8 @@ import (
 	"mars-base/common"
 	"mars-base/rpc"
 	"net"
+
+	"github.com/xtaci/kcp-go"
 )
 
 type (
