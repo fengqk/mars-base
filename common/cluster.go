@@ -16,6 +16,7 @@ type (
 	}
 
 	ClusterInfo rpc.ClusterInfo
+	StubMailBox rpc.StubMailBox
 )
 
 func (c *ClusterInfo) IpString() string {
@@ -32,4 +33,12 @@ func (c *ClusterInfo) Id() uint32 {
 
 func (c *ClusterInfo) ServiceType() rpc.SERVICE {
 	return c.Type
+}
+
+func (s *StubMailBox) StubName() string {
+	return s.StubType.String()
+}
+
+func (s *StubMailBox) Key() string {
+	return fmt.Sprintf("%s/%d", s.StubType.String(), s.Id)
 }
