@@ -28,7 +28,7 @@ type (
 	}
 )
 
-func (m *MailBox) Init(endpoints []string, info *common.ClusterInfo) {
+func (m *MailBox) Init(info *common.ClusterInfo, endpoints []string) {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}

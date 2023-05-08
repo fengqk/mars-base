@@ -7,6 +7,7 @@ import (
 	"github.com/fengqk/mars-base/cluster/etcd"
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
+	"github.com/nats-io/nats.go"
 )
 
 type (
@@ -55,4 +56,34 @@ func getRpcTopicChannel(head rpc.RpcHead) string {
 
 func getRpcCallChannel(head rpc.RpcHead) string {
 	return fmt.Sprintf("%s/%s/call/%d", etcd.ETCD_DIR, strings.ToLower(head.DestServerType.String()), head.ClusterId)
+}
+
+func setupNatsConn(connectString string, appDieChan chan bool, options ...nats.Option) (*nats.Conn, error) {
+	natsOptions := append(
+		options,
+		nats.DisconnectHandler(func(_ *nats.Conn) {
+			common.LOG.Println("disconnected from nats!")
+		}),
+		nats.ReconnectHandler(func(nc *nats.Conn) {
+			common.LOG.Printf("reconnected to nats server %s with address %s in cluster %s!", nc.ConnectedServerId(), nc.ConnectedAddr(), nc.ConnectedUrl())
+		}),
+		nats.ClosedHandler(func(nc *nats.Conn) {
+			err := nc.LastError()
+			if err == nil {
+				common.LOG.Println("nats connection closed with no error.")
+				return
+			}
+
+			common.LOG.Println("nats connection closed. reason: %q", nc.LastError())
+			if appDieChan != nil {
+				appDieChan <- true
+			}
+		}),
+	)
+
+	nc, err := nats.Connect(connectString, natsOptions...)
+	if err != nil {
+		return nil, err
+	}
+	return nc, nil
 }
