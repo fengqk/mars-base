@@ -7,7 +7,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/rpc"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
@@ -18,10 +18,10 @@ const (
 )
 
 type (
-	StubMailBoxMap map[int64]*common.StubMailBox
+	StubMailBoxMap map[int64]*base.StubMailBox
 
 	StubMailBox struct {
-		*common.ClusterInfo
+		*base.ClusterInfo
 		client            *clientv3.Client
 		lease             clientv3.Lease
 		stubMailBoxMap    [rpc.STUB_END]StubMailBoxMap
@@ -29,7 +29,7 @@ type (
 	}
 )
 
-func (s *StubMailBox) Create(info *common.StubMailBox) bool {
+func (s *StubMailBox) Create(info *base.StubMailBox) bool {
 	leaseResp, err := s.lease.Grant(context.Background(), STUB_TTL_TIME)
 	if err == nil {
 		leaseId := leaseResp.ID
@@ -47,7 +47,7 @@ func (s *StubMailBox) Create(info *common.StubMailBox) bool {
 	return false
 }
 
-func (s *StubMailBox) Init(info *common.ClusterInfo, endpoints []string) {
+func (s *StubMailBox) Init(info *base.ClusterInfo, endpoints []string) {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}
@@ -87,12 +87,12 @@ func (s *StubMailBox) Run() {
 	}
 }
 
-func (s *StubMailBox) Lease(info *common.StubMailBox) error {
+func (s *StubMailBox) Lease(info *base.StubMailBox) error {
 	_, err := s.lease.KeepAliveOnce(context.Background(), clientv3.LeaseID(info.LeaseId))
 	return err
 }
 
-func (s *StubMailBox) Get(stubType rpc.STUB, Id int64) *common.StubMailBox {
+func (s *StubMailBox) Get(stubType rpc.STUB, Id int64) *base.StubMailBox {
 	s.stubMailBoxLocker[stubType].RLock()
 	stub, bEx := s.stubMailBoxMap[stubType][Id]
 	s.stubMailBoxLocker[stubType].RUnlock()
@@ -109,7 +109,7 @@ func (s *StubMailBox) Count(stubType rpc.STUB) int64 {
 	return int64(nLen)
 }
 
-func (s *StubMailBox) add(info *common.StubMailBox) {
+func (s *StubMailBox) add(info *base.StubMailBox) {
 	s.stubMailBoxLocker[info.StubType].Lock()
 	stub, bOk := s.stubMailBoxMap[info.StubType][info.Id]
 	if !bOk {
@@ -120,7 +120,7 @@ func (s *StubMailBox) add(info *common.StubMailBox) {
 	s.stubMailBoxLocker[info.StubType].Unlock()
 }
 
-func (s *StubMailBox) del(info *common.StubMailBox) {
+func (s *StubMailBox) del(info *base.StubMailBox) {
 	s.stubMailBoxLocker[info.StubType].Lock()
 	delete(s.stubMailBoxMap[info.StubType], info.Id)
 	s.stubMailBoxLocker[info.StubType].Unlock()
@@ -136,8 +136,8 @@ func (s *StubMailBox) getAll() {
 	}
 }
 
-func nodeToStubMailBox(val []byte) *common.StubMailBox {
-	info := &common.StubMailBox{}
+func nodeToStubMailBox(val []byte) *base.StubMailBox {
+	info := &base.StubMailBox{}
 	err := json.Unmarshal([]byte(val), info)
 	if err != nil {
 		log.Print(err)

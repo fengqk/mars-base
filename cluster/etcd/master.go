@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/fengqk/mars-base/actor"
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/rpc"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
@@ -17,12 +17,12 @@ const (
 
 type (
 	Master struct {
-		common.IClusterInfo
+		base.IClusterInfo
 		client *clientv3.Client
 	}
 )
 
-func (m *Master) Init(info common.IClusterInfo, endpoints []string) {
+func (m *Master) Init(info base.IClusterInfo, endpoints []string) {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}
@@ -67,16 +67,16 @@ func (m *Master) InitServices() {
 	}
 }
 
-func (m *Master) addService(info *common.ClusterInfo) {
+func (m *Master) addService(info *base.ClusterInfo) {
 	actor.MGR.SendMsg(rpc.RpcHead{}, "Cluster.Cluster_Add", info)
 }
 
-func (m *Master) delService(info *common.ClusterInfo) {
+func (m *Master) delService(info *base.ClusterInfo) {
 	actor.MGR.SendMsg(rpc.RpcHead{}, "Cluster.Cluster_Del", info)
 }
 
-func nodeToService(val []byte) *common.ClusterInfo {
-	info := &common.ClusterInfo{}
+func nodeToService(val []byte) *base.ClusterInfo {
+	info := &base.ClusterInfo{}
 	err := json.Unmarshal([]byte(val), info)
 	if err != nil {
 		log.Print(err)

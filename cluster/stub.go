@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/fengqk/mars-base/actor"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/cluster/etcd"
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
@@ -22,7 +23,7 @@ type (
 
 	Stub struct {
 		fsm         fsm_type
-		StubMailBox common.StubMailBox
+		StubMailBox base.StubMailBox
 		isRegister  int32
 	}
 )
