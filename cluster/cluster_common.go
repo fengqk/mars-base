@@ -22,3 +22,9 @@ func NewService(info *common.ClusterInfo, endpoints []string) *Service {
 	service.Init(info, endpoints)
 	return (*Service)(service)
 }
+
+func NewSnowflake(endpoints []string) *Snowflake {
+	uuid := &etcd.Snowflake{}
+	uuid.Init(endpoints)
+	return (*Snowflake)(uuid)
+}
