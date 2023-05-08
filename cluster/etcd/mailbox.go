@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/fengqk/mars-base/actor"
-	"github.com/fengqk/mars-base/cluster"
+	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
@@ -20,7 +20,7 @@ const (
 
 type (
 	MailBox struct {
-		*cluster.ClusterInfo
+		*common.ClusterInfo
 		client        *clientv3.Client
 		lease         clientv3.Lease
 		mailBoxLocker *sync.RWMutex
@@ -28,7 +28,7 @@ type (
 	}
 )
 
-func (m *MailBox) Init(endpoints []string, info *cluster.ClusterInfo) {
+func (m *MailBox) Init(endpoints []string, info *common.ClusterInfo) {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}

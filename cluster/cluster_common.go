@@ -1,36 +1,24 @@
 package cluster
 
 import (
-	"fmt"
-	"strings"
-
+	"github.com/fengqk/mars-base/cluster/etcd"
 	"github.com/fengqk/mars-base/common"
-	"github.com/fengqk/mars-base/rpc"
 )
 
 type (
-	ClusterInfo rpc.ClusterInfo
-
-	IClusterInfo interface {
-		Id() uint32
-		String() string
-		ServerType() rpc.SERVICE
-		IpString() string
-	}
+	Master    etcd.Master
+	Service   etcd.Service
+	Snowflake etcd.Snowflake
 )
 
-func (c *ClusterInfo) IpString() string {
-	return fmt.Sprintf("%s:%d", c.Ip, c.Port)
+func NewMaster(info common.IClusterInfo, endpoints []string) *Master {
+	master := &etcd.Master{}
+	master.Init(info, endpoints)
+	return (*Master)(master)
 }
 
-func (c *ClusterInfo) String() string {
-	return strings.ToLower(c.Type.String())
-}
-
-func (c *ClusterInfo) Id() uint32 {
-	return common.ToHash(c.IpString())
-}
-
-func (c *ClusterInfo) ServiceType() rpc.SERVICE {
-	return c.Type
+func NewService(info *common.ClusterInfo, endpoints []string) *Service {
+	service := &etcd.Service{}
+	service.Init(info, endpoints)
+	return (*Service)(service)
 }
