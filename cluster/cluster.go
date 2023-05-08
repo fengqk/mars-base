@@ -1,8 +1,10 @@
 package cluster
 
 import (
+	"sync"
 	"time"
 
+	"github.com/fengqk/mars-base/actor"
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 )
@@ -23,4 +25,17 @@ type (
 	}
 
 	OpOption func(*Op)
+
+	ICluster interface {
+		actor.IActor
+		InitCluster(info *common.ClusterInfo, endpoints []string, natsUrl string, params ...OpOption)
+	}
+
+	Cluster struct {
+		actor.Actor
+		*Service
+		clusterMap    [MAX_CLUSTER_NUM]ClusterMap
+		clusterLocker [MAX_CLUSTER_NUM]*sync.RWMutex
+		hashRing      [MAX_CLUSTER_NUM]*common.hashRing
+	}
 )

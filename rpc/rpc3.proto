@@ -10,6 +10,7 @@ enum SERVICE{
     GATE = 2;
     GAME = 3;
     DB = 4;
+    NUM = 5;
 };
 
 //发送标志
