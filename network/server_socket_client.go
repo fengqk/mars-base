@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/common/timer"
 	"github.com/fengqk/mars-base/rpc"
@@ -105,7 +106,7 @@ func (s *ServerSocketClient) DoSend(buff []byte) int {
 func (s *ServerSocketClient) OnNetFail(error int) {
 	s.Stop()
 	if s.connType == CLIENT_CONNECT {
-		stream := common.NewBitStream(make([]byte, 32), 32)
+		stream := base.NewBitStream(make([]byte, 32), 32)
 		stream.WriteInt(int(DISCONNECTINT), 32)
 		stream.WriteInt(int(s.clientId), 32)
 		s.HandlePacket(stream.GetBuffer())

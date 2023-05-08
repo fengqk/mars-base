@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 )
 
 const (
@@ -33,7 +33,7 @@ type (
 func NewPacketParser(conf PacketConfig) PacketParser {
 	p := PacketParser{}
 	p.len = PACKET_LEN_DWORD
-	p.maxLen = common.MAX_PACKET
+	p.maxLen = base.MAX_PACKET
 	p.littleEndian = true
 	if conf.Func != nil {
 		p.packetFunc = conf.Func
@@ -102,7 +102,7 @@ ParsePacket:
 
 func (p *PacketParser) Write(data []byte) []byte {
 	msgLen := len(data)
-	if msgLen+int(p.len) > common.MAX_PACKET {
+	if msgLen+int(p.len) > base.MAX_PACKET {
 		fmt.Println("write over common.MAX_PACKET")
 	}
 

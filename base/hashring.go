@@ -1,10 +1,12 @@
-package common
+package base
 
 import (
 	"errors"
 	"hash/crc32"
 	"strconv"
 	"sync"
+
+	"github.com/fengqk/mars-base/base/maps"
 )
 
 const (

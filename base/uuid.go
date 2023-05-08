@@ -1,11 +1,11 @@
-package common
+package base
 
 import (
 	"log"
 	"sync"
 	"time"
 
-	"github.com/fengqk/mars-base/common/vector"
+	"github.com/fengqk/mars-base/base/vector"
 )
 
 /*

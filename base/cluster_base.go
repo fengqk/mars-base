@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 )
 
@@ -24,7 +23,7 @@ type (
 )
 
 func (c *ClusterInfo) Id() uint32 {
-	return common.ToHash(c.IpString())
+	return ToHash(c.IpString())
 }
 
 func (c *ClusterInfo) String() string {

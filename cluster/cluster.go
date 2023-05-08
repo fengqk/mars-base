@@ -9,9 +9,9 @@ import (
 
 	"github.com/fengqk/mars-base/actor"
 	"github.com/fengqk/mars-base/base"
+	"github.com/fengqk/mars-base/base/vector"
 	"github.com/fengqk/mars-base/cluster/etcd"
 	"github.com/fengqk/mars-base/common"
-	"github.com/fengqk/mars-base/common/vector"
 	"github.com/fengqk/mars-base/network"
 	"github.com/fengqk/mars-base/rpc"
 	"github.com/nats-io/nats.go"
@@ -56,7 +56,7 @@ type (
 		*Service
 		clusterMap     [MAX_CLUSTER_NUM]ClusterMap
 		clusterLocker  [MAX_CLUSTER_NUM]*sync.RWMutex
-		hashRing       [MAX_CLUSTER_NUM]*common.HashRing
+		hashRing       [MAX_CLUSTER_NUM]*base.HashRing
 		conn           *nats.Conn
 		dieChan        chan bool
 		master         *Master
@@ -84,7 +84,7 @@ func (c *Cluster) InitCluster(info *base.ClusterInfo, endpoints []string, natsUr
 	for i := 0; i < MAX_CLUSTER_NUM; i++ {
 		c.clusterLocker[i] = &sync.RWMutex{}
 		c.clusterMap[i] = make(ClusterMap)
-		c.hashRing[i] = common.NewHashRing()
+		c.hashRing[i] = base.NewHashRing()
 	}
 	c.clusterInfoMap = make(map[uint32]*base.ClusterInfo)
 	c.packetFuncList = &vector.Vector[network.PacketFunc]{}
@@ -271,7 +271,7 @@ func (c *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, par
 
 			f.Call(in)
 		} else {
-			common.LOG.Printf("CallMsg [%s] params at least one context", funcName)
+			base.LOG.Printf("CallMsg [%s] params at least one context", funcName)
 			return errors.New("callmsg params at least one context")
 		}
 	}
@@ -280,7 +280,7 @@ func (c *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, par
 
 func (c *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 	if head.Id == 0 {
-		head.Id = int64(uint32(common.RAND.RandI(1, 0xFFFFFFFF)))
+		head.Id = int64(uint32(base.RAND.RandI(1, 0xFFFFFFFF)))
 	}
 	_, head.ClusterId = c.hashRing[head.DestServerType].Get64(head.Id)
 	pCluster := c.GetCluster(head)

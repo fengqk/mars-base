@@ -7,13 +7,13 @@ import (
 	"errors"
 	reflect "reflect"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/golang/protobuf/proto"
 )
 
 // rpc UnmarshalHead
 func UnmarshalHead(buff []byte) (*RpcPacket, RpcHead) {
-	nLen := common.Clamp(len(buff), 0, 256)
+	nLen := base.Clamp(len(buff), 0, 256)
 	return Unmarshal(buff[:nLen])
 }
 
@@ -74,7 +74,7 @@ func UnmarshalBodyCall(rpcPacket *RpcPacket, pFuncType reflect.Type) (error, []i
 }
 
 // rpc  UnmarshalPB
-func unmarshalPB(bitstream *common.BitStream) (proto.Message, error) {
+func unmarshalPB(bitstream *base.BitStream) (proto.Message, error) {
 	packetName := bitstream.ReadString()
 	nLen := bitstream.ReadInt(32)
 	packetBuf := bitstream.ReadBits(nLen << 3)

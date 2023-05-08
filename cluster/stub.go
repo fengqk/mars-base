@@ -8,7 +8,6 @@ import (
 	"github.com/fengqk/mars-base/actor"
 	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/cluster/etcd"
-	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 )
 
@@ -64,7 +63,7 @@ func (s *Stub) publish() {
 		s.fsm = fsm_lease
 		atomic.StoreInt32(&s.isRegister, 1)
 		actor.MGR.SendMsg(rpc.RpcHead{SendType: rpc.SEND_BOARD_CAST}, fmt.Sprintf("%s.OnStubRegister", s.StubMailBox.StubType.String()))
-		common.LOG.Printf("stub [%s]注册成功[%d]", s.StubMailBox.StubType.String(), s.StubMailBox.Id)
+		base.LOG.Printf("stub [%s]注册成功[%d]", s.StubMailBox.StubType.String(), s.StubMailBox.Id)
 		time.Sleep(etcd.STUB_TTL_TIME / 3)
 	} else if MGR.IsEnoughStub(s.StubMailBox.StubType) {
 		s.fsm = fsm_idle
@@ -77,7 +76,7 @@ func (s *Stub) lease() {
 		s.fsm = fsm_idle
 		atomic.StoreInt32(&s.isRegister, 0)
 		actor.MGR.SendMsg(rpc.RpcHead{SendType: rpc.SEND_BOARD_CAST}, fmt.Sprintf("%s.OnStubUnRegister", s.StubMailBox.StubType.String()))
-		common.LOG.Printf("stub [%s]注销成功[%d]", s.StubMailBox.StubType.String(), s.StubMailBox.Id)
+		base.LOG.Printf("stub [%s]注销成功[%d]", s.StubMailBox.StubType.String(), s.StubMailBox.Id)
 	} else {
 		time.Sleep(etcd.STUB_TTL_TIME / 3)
 	}

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/common"
 	"github.com/golang/protobuf/proto"
 )
@@ -34,7 +35,7 @@ func marshal(head *RpcHead, funcName *string, params ...interface{}) Packet {
 }
 
 // rpc  MarshalPB
-func marshalPB(bitstream *common.BitStream, packet proto.Message) {
+func marshalPB(bitstream *base.BitStream, packet proto.Message) {
 	bitstream.WriteString(proto.MessageName(packet))
 	buf, _ := proto.Marshal(packet)
 	nLen := len(buf)

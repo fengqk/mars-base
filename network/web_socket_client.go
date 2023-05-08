@@ -7,6 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/common/timer"
 	"github.com/fengqk/mars-base/rpc"
@@ -103,7 +104,7 @@ func (w *WebSocketClient) OnNetFail(error int) {
 	w.Stop()
 
 	if w.connType == CLIENT_CONNECT { //netgate对外格式统一
-		stream := common.NewBitStream(make([]byte, 32), 32)
+		stream := base.NewBitStream(make([]byte, 32), 32)
 		stream.WriteInt(int(DISCONNECTINT), 32)
 		stream.WriteInt(int(w.clientId), 32)
 		w.HandlePacket(stream.GetBuffer())

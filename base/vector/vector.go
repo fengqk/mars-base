@@ -1,6 +1,8 @@
 package vector
 
-import "github.com/fengqk/mars-base/common"
+import (
+	"log"
+)
 
 const (
 	VectorBlockSize = 16
@@ -14,8 +16,14 @@ type (
 	}
 )
 
+func assert(x bool, y string) {
+	if bool(x) == false {
+		log.Printf("\nFatal :{%s}", y)
+	}
+}
+
 func (v *Vector[T]) shift(pos int32) {
-	common.Assert(pos <= v.count, "vector shift out of bounds")
+	assert(pos <= v.count, "vector shift out of bounds")
 
 	if pos == v.size {
 		v.resize(v.count + 1)
@@ -49,7 +57,7 @@ func (v *Vector[T]) incr() {
 }
 
 func (v *Vector[T]) decr() {
-	common.Assert(v.count > 0, "vector decr count is zero")
+	assert(v.count > 0, "vector decr count is zero")
 	v.count--
 }
 
@@ -64,12 +72,12 @@ func (v *Vector[T]) PushBack(val T) {
 }
 
 func (v *Vector[T]) PopFront() {
-	common.Assert(v.count > 0, "Vector popFront count is zero")
+	assert(v.count > 0, "Vector popFront count is zero")
 	v.Erase(0)
 }
 
 func (v *Vector[T]) PopBack() {
-	common.Assert(v.count > 0, "Vector popBack count is zero")
+	assert(v.count > 0, "Vector popBack count is zero")
 	v.decr()
 }
 
@@ -78,7 +86,7 @@ func (v *Vector[T]) WithInRange(index int32) bool {
 }
 
 func (v *Vector[T]) Erase(pos int32) {
-	common.Assert(pos < v.count, "Vector erase out of bounds")
+	assert(pos < v.count, "Vector erase out of bounds")
 	if pos < v.count-1 {
 		copy(v.array[pos:v.count], v.array[pos+1:v.count])
 	}
@@ -86,12 +94,12 @@ func (v *Vector[T]) Erase(pos int32) {
 }
 
 func (v *Vector[T]) Front() T {
-	common.Assert(v.count > 0, "Vector front count is zero")
+	assert(v.count > 0, "Vector front count is zero")
 	return v.array[0]
 }
 
 func (v *Vector[T]) Back() T {
-	common.Assert(v.count > 0, "Vector back count is zero")
+	assert(v.count > 0, "Vector back count is zero")
 	return v.array[v.count-1]
 }
 
@@ -112,7 +120,7 @@ func (v *Vector[T]) Clear() {
 }
 
 func (v *Vector[T]) Get(pos int32) T {
-	common.Assert(pos < v.count, "Vector get out of bounds")
+	assert(pos < v.count, "Vector get out of bounds")
 	return v.array[pos]
 }
 

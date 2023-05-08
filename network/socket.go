@@ -4,7 +4,7 @@ import (
 	"net"
 	"sync/atomic"
 
-	"github.com/fengqk/mars-base/common/vector"
+	"github.com/fengqk/mars-base/base/vector"
 	"github.com/fengqk/mars-base/rpc"
 )
 
