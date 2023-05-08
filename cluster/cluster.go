@@ -3,6 +3,7 @@ package cluster
 import (
 	"time"
 
+	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 )
 
@@ -11,4 +12,15 @@ const (
 	CALL_TIME_OUT   = 500 * time.Millisecond
 )
 
-type ()
+type (
+	ClusterMap       map[uint32]*common.ClusterInfo
+	ClusterSocketMap map[uint32]*common.ClusterInfo
+
+	Op struct {
+		mailBoxEndpoints     []string
+		stubMailBoxEndpoints []string
+		stub                 common.Stub
+	}
+
+	OpOption func(*Op)
+)
