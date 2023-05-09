@@ -6,13 +6,13 @@ import (
 	"log"
 	"time"
 
-	"github.com/fengqk/mars-base/base"
+	"github.com/fengqk/mars-base/common"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 type (
 	Service struct {
-		*base.ClusterInfo
+		*common.ClusterInfo
 		client  *clientv3.Client
 		lease   clientv3.Lease
 		leaseId clientv3.LeaseID
@@ -20,7 +20,7 @@ type (
 	}
 )
 
-func (s *Service) Init(info *base.ClusterInfo, endpoints []string) {
+func (s *Service) Init(info *common.ClusterInfo, endpoints []string) {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}

@@ -27,8 +27,8 @@ var (
 )
 
 type (
-	ClusterMap       map[uint32]*base.ClusterInfo
-	ClusterSocketMap map[uint32]*base.ClusterInfo
+	ClusterMap       map[uint32]*common.ClusterInfo
+	ClusterSocketMap map[uint32]*common.ClusterInfo
 
 	Op struct {
 		mailBoxEndpoints     []string
@@ -40,11 +40,11 @@ type (
 
 	ICluster interface {
 		actor.IActor
-		InitCluster(info *base.ClusterInfo, endpoints []string, natsUrl string, params ...OpOption)
+		InitCluster(info *common.ClusterInfo, endpoints []string, natsUrl string, params ...OpOption)
 		RegisterClusterCall() //注册集群通用回调
-		AddCluster(info *base.ClusterInfo)
-		DelCluster(info *base.ClusterInfo)
-		GetCluster(rpc.RpcHead) *base.ClusterInfo
+		AddCluster(info *common.ClusterInfo)
+		DelCluster(info *common.ClusterInfo)
+		GetCluster(rpc.RpcHead) *common.ClusterInfo
 		BindPacketFunc(packetFunc network.PacketFunc)
 		CallMsg(interface{}, rpc.RpcHead, string, ...interface{}) error //同步给集群特定服务器
 		RandomCluster(head rpc.RpcHead) rpc.RpcHead                     //随机分配
@@ -60,7 +60,7 @@ type (
 		conn           *nats.Conn
 		dieChan        chan bool
 		master         *Master
-		clusterInfoMap map[uint32]*base.ClusterInfo
+		clusterInfoMap map[uint32]*common.ClusterInfo
 		packetFuncList *vector.Vector[network.PacketFunc]
 		MailBox        etcd.MailBox
 		StubMailBox    etcd.StubMailBox
@@ -68,7 +68,7 @@ type (
 	}
 
 	EmptyClusterInfo struct {
-		base.ClusterInfo
+		common.ClusterInfo
 	}
 
 	CallFunc struct {
@@ -79,14 +79,14 @@ type (
 	}
 )
 
-func (c *Cluster) InitCluster(info *base.ClusterInfo, endpoints []string, natsUrl string, params ...OpOption) {
+func (c *Cluster) InitCluster(info *common.ClusterInfo, endpoints []string, natsUrl string, params ...OpOption) {
 	c.Actor.Init()
 	for i := 0; i < MAX_CLUSTER_NUM; i++ {
 		c.clusterLocker[i] = &sync.RWMutex{}
 		c.clusterMap[i] = make(ClusterMap)
 		c.hashRing[i] = base.NewHashRing()
 	}
-	c.clusterInfoMap = make(map[uint32]*base.ClusterInfo)
+	c.clusterInfoMap = make(map[uint32]*common.ClusterInfo)
 	c.packetFuncList = &vector.Vector[network.PacketFunc]{}
 
 	conn, err := setupNatsConn(
@@ -128,7 +128,7 @@ func (c *Cluster) InitCluster(info *base.ClusterInfo, endpoints []string, natsUr
 	c.master = NewMaster(&EmptyClusterInfo{}, endpoints)
 }
 
-func (c *Cluster) AddCluster(info *base.ClusterInfo) {
+func (c *Cluster) AddCluster(info *common.ClusterInfo) {
 	c.clusterLocker[info.Type].Lock()
 	c.clusterMap[info.Type][info.Id()] = info
 	c.clusterLocker[info.Type].Unlock()
@@ -136,7 +136,7 @@ func (c *Cluster) AddCluster(info *base.ClusterInfo) {
 	base.LOG.Printf("服务器[%s:%s:%d]建立连接", info.String(), info.Ip, info.Port)
 }
 
-func (c *Cluster) DelCluster(info *base.ClusterInfo) {
+func (c *Cluster) DelCluster(info *common.ClusterInfo) {
 	c.clusterLocker[info.Type].RLock()
 	_, bEx := c.clusterMap[info.Type][info.Id()]
 	c.clusterLocker[info.Type].RUnlock()
@@ -150,7 +150,7 @@ func (c *Cluster) DelCluster(info *base.ClusterInfo) {
 	base.LOG.Printf("服务器[%s:%s:%d]断开连接", info.String(), info.Ip, info.Port)
 }
 
-func (c *Cluster) GetCluster(head rpc.RpcHead) *base.ClusterInfo {
+func (c *Cluster) GetCluster(head rpc.RpcHead) *common.ClusterInfo {
 	c.clusterLocker[head.DestServerType].RLock()
 	defer c.clusterLocker[head.DestServerType].RUnlock()
 	client, bEx := c.clusterMap[head.DestServerType][head.ClusterId]
@@ -295,7 +295,7 @@ func (c *Cluster) IsEnoughStub(stub rpc.STUB) bool {
 }
 
 // 集群新加member
-func (c *Cluster) Cluster_Add(ctx context.Context, info *base.ClusterInfo) {
+func (c *Cluster) Cluster_Add(ctx context.Context, info *common.ClusterInfo) {
 	_, bEx := c.clusterInfoMap[info.Id()]
 	if !bEx {
 		c.AddCluster(info)
@@ -304,7 +304,7 @@ func (c *Cluster) Cluster_Add(ctx context.Context, info *base.ClusterInfo) {
 }
 
 // 集群删除member
-func (c *Cluster) Cluster_Del(ctx context.Context, info *base.ClusterInfo) {
+func (c *Cluster) Cluster_Del(ctx context.Context, info *common.ClusterInfo) {
 	delete(c.clusterInfoMap, info.Id())
 	c.DelCluster(info)
 }

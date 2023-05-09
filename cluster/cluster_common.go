@@ -6,6 +6,7 @@ import (
 
 	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/cluster/etcd"
+	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 	"github.com/nats-io/nats.go"
 )
@@ -16,13 +17,13 @@ type (
 	Snowflake etcd.Snowflake
 )
 
-func NewMaster(info base.IClusterInfo, endpoints []string) *Master {
+func NewMaster(info common.IClusterInfo, endpoints []string) *Master {
 	master := &etcd.Master{}
 	master.Init(info, endpoints)
 	return (*Master)(master)
 }
 
-func NewService(info *base.ClusterInfo, endpoints []string) *Service {
+func NewService(info *common.ClusterInfo, endpoints []string) *Service {
 	service := &etcd.Service{}
 	service.Init(info, endpoints)
 	return (*Service)(service)
@@ -34,15 +35,15 @@ func NewSnowflake(endpoints []string) *Snowflake {
 	return (*Snowflake)(uuid)
 }
 
-func getChannel(clusterInfo base.ClusterInfo) string {
+func getChannel(clusterInfo common.ClusterInfo) string {
 	return fmt.Sprintf("%s/%s/%d", etcd.ETCD_DIR, clusterInfo.String(), clusterInfo.Id())
 }
 
-func getTopicChannel(clusterInfo base.ClusterInfo) string {
+func getTopicChannel(clusterInfo common.ClusterInfo) string {
 	return fmt.Sprintf("%s/%s", etcd.ETCD_DIR, clusterInfo.String())
 }
 
-func getCallChannel(clusterInfo base.ClusterInfo) string {
+func getCallChannel(clusterInfo common.ClusterInfo) string {
 	return fmt.Sprintf("%s/%s/call/%d", etcd.ETCD_DIR, clusterInfo.String(), clusterInfo.Id())
 }
 

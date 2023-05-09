@@ -8,6 +8,7 @@ import (
 	"github.com/fengqk/mars-base/actor"
 	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/cluster/etcd"
+	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/rpc"
 )
 
@@ -22,7 +23,7 @@ type (
 
 	Stub struct {
 		fsm         fsm_type
-		StubMailBox base.StubMailBox
+		StubMailBox common.StubMailBox
 		isRegister  int32
 	}
 )
