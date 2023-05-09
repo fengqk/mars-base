@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/rpc"
 	"github.com/xtaci/kcp-go"
 )
@@ -50,7 +50,7 @@ func (c *ClientSocket) SendMsg(head rpc.RpcHead, funcName string, params ...inte
 func (c *ClientSocket) Send(head rpc.RpcHead, packet rpc.Packet) int {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(err)
+			base.TraceCode(err)
 		}
 	}()
 
@@ -111,7 +111,7 @@ func (c *ClientSocket) Run() bool {
 	loop := func() bool {
 		defer func() {
 			if err := recover(); err != nil {
-				common.TraceCode(err)
+				base.TraceCode(err)
 			}
 		}()
 

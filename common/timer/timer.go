@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 )
 
 const (
@@ -256,7 +256,7 @@ func (t *Timer) update() {
 func (t *Timer) loop() bool {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(err)
+			base.TraceCode(err)
 		}
 	}()
 

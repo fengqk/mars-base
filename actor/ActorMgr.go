@@ -4,7 +4,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/network"
 	"github.com/fengqk/mars-base/rpc"
 )
@@ -62,7 +62,7 @@ func (a *ActorMgr) RegisterActor(ac IActor, params ...OpOption) {
 	op := Op{}
 	op.applyOpts(params)
 	rType := reflect.TypeOf(ac)
-	name := common.GetClassName(rType)
+	name := base.GetClassName(rType)
 	_, bEx := a.actorTypeMap[rType]
 	if bEx {
 		log.Panicf("RegisterActor, %s must unique name", name)

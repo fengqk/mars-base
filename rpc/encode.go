@@ -5,7 +5,6 @@ import (
 	"encoding/gob"
 
 	"github.com/fengqk/mars-base/base"
-	"github.com/fengqk/mars-base/common"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -18,7 +17,7 @@ func Marshal(head *RpcHead, funcName *string, params ...interface{}) Packet {
 func marshal(head *RpcHead, funcName *string, params ...interface{}) Packet {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(err)
+			base.TraceCode(err)
 		}
 	}()
 

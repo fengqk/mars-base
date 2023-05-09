@@ -94,7 +94,7 @@ func (c *Cluster) InitCluster(info *base.ClusterInfo, endpoints []string, natsUr
 		c.dieChan,
 	)
 	if err != nil {
-		common.LOG.Fatalln("nats connect error!!!!")
+		base.LOG.Fatalln("nats connect error!!!!")
 	}
 	c.conn = conn
 
@@ -133,7 +133,7 @@ func (c *Cluster) AddCluster(info *base.ClusterInfo) {
 	c.clusterMap[info.Type][info.Id()] = info
 	c.clusterLocker[info.Type].Unlock()
 	c.hashRing[info.Type].Add(info.IpString())
-	common.LOG.Printf("服务器[%s:%s:%d]建立连接", info.String(), info.Ip, info.Port)
+	base.LOG.Printf("服务器[%s:%s:%d]建立连接", info.String(), info.Ip, info.Port)
 }
 
 func (c *Cluster) DelCluster(info *base.ClusterInfo) {
@@ -147,7 +147,7 @@ func (c *Cluster) DelCluster(info *base.ClusterInfo) {
 	}
 
 	c.hashRing[info.Type].Remove(info.IpString())
-	common.LOG.Printf("服务器[%s:%s:%d]断开连接", info.String(), info.Ip, info.Port)
+	base.LOG.Printf("服务器[%s:%s:%d]断开连接", info.String(), info.Ip, info.Port)
 }
 
 func (c *Cluster) GetCluster(head rpc.RpcHead) *base.ClusterInfo {
@@ -248,7 +248,7 @@ func (c *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, par
 			}
 		}
 	default:
-		common.LOG.Printf("CALL MSG [%s] CAN NOT BOARDCAST", funcName)
+		base.LOG.Printf("CALL MSG [%s] CAN NOT BOARDCAST", funcName)
 		//_, head.ClusterId = c.hashRing[head.DestServerType].Get64(head.Id)
 	}
 

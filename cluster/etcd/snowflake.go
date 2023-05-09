@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
@@ -42,7 +42,7 @@ func (s *Snowflake) Init(endpoints []string) {
 		log.Fatal("cannot connec to etcd:", err)
 	}
 	lease := clientv3.NewLease(etcdClient)
-	s.id = int64(common.RAND.RandI(1, int(common.WorkeridMax)))
+	s.id = int64(base.RAND.RandI(1, int(base.WorkeridMax)))
 	s.client = etcdClient
 	s.lease = lease
 	for !s.SET() {
@@ -83,11 +83,11 @@ func (s *Snowflake) SET() bool {
 		Else()
 	txnRes, err := tx.Commit()
 	if err != nil || !txnRes.Succeeded { //抢锁失败
-		s.id = int64(common.RAND.RandI(1, int(common.WorkeridMax)))
+		s.id = int64(base.RAND.RandI(1, int(base.WorkeridMax)))
 		return false
 	}
 
-	common.UUID.Init(s.id) //设置uuid
+	base.UUID.Init(s.id) //设置uuid
 	s.status = TTL
 	return true
 }

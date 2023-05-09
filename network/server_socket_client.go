@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/fengqk/mars-base/base"
-	"github.com/fengqk/mars-base/common"
 	"github.com/fengqk/mars-base/common/timer"
 	"github.com/fengqk/mars-base/rpc"
 )
@@ -73,7 +72,7 @@ func (s *ServerSocketClient) Start() bool {
 func (s *ServerSocketClient) Send(head rpc.RpcHead, packet rpc.Packet) int {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(err)
+			base.TraceCode(err)
 		}
 	}()
 
@@ -146,7 +145,7 @@ func (s *ServerSocketClient) Run() bool {
 	loop := func() bool {
 		defer func() {
 			if err := recover(); err != nil {
-				common.TraceCode(err)
+				base.TraceCode(err)
 			}
 		}()
 
@@ -199,7 +198,7 @@ func (s *ServerSocketClient) SendLoop() bool {
 	for {
 		defer func() {
 			if err := recover(); err != nil {
-				common.TraceCode(err)
+				base.TraceCode(err)
 			}
 		}()
 

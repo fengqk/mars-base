@@ -10,8 +10,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fengqk/mars-base/common"
-	"github.com/fengqk/mars-base/common/mpsc"
+	"github.com/fengqk/mars-base/base"
+	"github.com/fengqk/mars-base/base/mpsc"
 	"github.com/fengqk/mars-base/common/timer"
 	"github.com/fengqk/mars-base/rpc"
 )
@@ -151,7 +151,7 @@ func (a *Actor) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}
 func (a *Actor) Send(head rpc.RpcHead, packet rpc.Packet) {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(err)
+			base.TraceCode(err)
 		}
 	}()
 
@@ -257,7 +257,7 @@ func (a *Actor) run() {
 func (a *Actor) loop() bool {
 	defer func() {
 		if err := recover(); err != nil {
-			common.TraceCode(a.trace.ToString(), err)
+			base.TraceCode(a.trace.ToString(), err)
 		}
 	}()
 

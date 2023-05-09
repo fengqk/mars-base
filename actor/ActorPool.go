@@ -3,7 +3,7 @@ package actor
 import (
 	"reflect"
 
-	"github.com/fengqk/mars-base/common"
+	"github.com/fengqk/mars-base/base"
 	"github.com/fengqk/mars-base/rpc"
 )
 
@@ -21,7 +21,7 @@ func (a *ActorPool) InitPool(pool IActorPool, rType reflect.Type, num int32) {
 	for i := 0; i < int(num); i++ {
 		ac := reflect.New(rType).Interface().(IActor)
 		rType := reflect.TypeOf(ac)
-		op := Op{actorType: ACTOR_TYPE_POOL, name: common.GetClassName(rType)}
+		op := Op{actorType: ACTOR_TYPE_POOL, name: base.GetClassName(rType)}
 		ac.register(ac, op)
 		ac.Init()
 		a.actorList[i] = ac
