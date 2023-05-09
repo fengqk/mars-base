@@ -39,10 +39,10 @@ func (a *ActorPool) SendActor(head rpc.RpcHead, packet rpc.Packet) bool {
 		switch head.SendType {
 		case rpc.SEND_POINT:
 			index := head.Id % int64(a.actorSize)
-			a.actorList[index].Actor().Send(head, packet)
+			a.actorList[index].getActor().Send(head, packet)
 		default:
 			for i := 0; i < int(a.actorSize); i++ {
-				a.actorList[i].Actor().Send(head, packet)
+				a.actorList[i].getActor().Send(head, packet)
 			}
 		}
 		return true
