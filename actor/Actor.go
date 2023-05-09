@@ -61,7 +61,7 @@ type (
 		GetName() string
 		GetActorType() ACTOR_TYPE
 		HasRpc(string) bool
-		Actor() *Actor
+		getActor() *Actor
 		register(IActor, Op)
 		setState(state int32)
 		bindPool(IActorPool)
@@ -183,12 +183,8 @@ func (a *Actor) GetId() int64 {
 	return a.id
 }
 
-func (a *Actor) SetId(id int64) {
-	a.id = id
-}
-
-func (a *Actor) GetName() string {
-	return a.actorName
+func (a *Actor) GetState() int32 {
+	return atomic.LoadInt32(&a.state)
 }
 
 func (a *Actor) GetRpcHead(ctx context.Context) rpc.RpcHead {
@@ -196,8 +192,8 @@ func (a *Actor) GetRpcHead(ctx context.Context) rpc.RpcHead {
 	return rpcHead
 }
 
-func (a *Actor) GetState() int32 {
-	return atomic.LoadInt32(&a.state)
+func (a *Actor) GetName() string {
+	return a.actorName
 }
 
 func (a *Actor) GetActorType() ACTOR_TYPE {
@@ -209,6 +205,10 @@ func (a *Actor) HasRpc(funcName string) bool {
 	return bEx
 }
 
+func (a *Actor) SetId(id int64) {
+	a.id = id
+}
+
 func (a *Actor) UpdateTimer(ctx context.Context, ptr uintptr) {
 	fun, isEx := a.timerMap[ptr]
 	if isEx {
@@ -218,8 +218,13 @@ func (a *Actor) UpdateTimer(ctx context.Context, ptr uintptr) {
 	}
 }
 
-func (a *Actor) Actor() *Actor {
+func (a *Actor) getActor() *Actor {
 	return a
+}
+
+func (a *Actor) register(ac IActor, op Op) {
+	rType := reflect.TypeOf(ac)
+	a.ActorBase = ActorBase{rType: rType, rValue: reflect.ValueOf(ac), Self: ac, actorName: op.name, actorType: op.actorType}
 }
 
 func (a *Actor) setState(state int32) {
@@ -232,11 +237,6 @@ func (a *Actor) bindPool(pool IActorPool) {
 
 func (a *Actor) getPool() IActorPool {
 	return a.pool
-}
-
-func (a *Actor) register(ac IActor, op Op) {
-	rType := reflect.TypeOf(ac)
-	a.ActorBase = ActorBase{rType: rType, rValue: reflect.ValueOf(ac), Self: ac, actorName: op.name, actorType: op.actorType}
 }
 
 func (a *Actor) clear() {

@@ -128,6 +128,10 @@ func (c *Cluster) InitCluster(info *common.ClusterInfo, endpoints []string, nats
 	c.master = NewMaster(&EmptyClusterInfo{}, endpoints)
 }
 
+func (c *Cluster) RegisterClusterCall() {
+	return
+}
+
 func (c *Cluster) AddCluster(info *common.ClusterInfo) {
 	c.clusterLocker[info.Type].Lock()
 	c.clusterMap[info.Type][info.Id()] = info
