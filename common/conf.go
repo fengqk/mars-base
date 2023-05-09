@@ -24,6 +24,22 @@ type (
 		Password string `yaml:"password"`
 	}
 
+	Etcd struct {
+		Endpoints []string `yaml:"endpoints"`
+	}
+
+	SnowFlake struct {
+		Endpoints []string `yaml:"endpoints"`
+	}
+
+	Nats struct {
+		Endpoints string `yaml:"endpoints"`
+	}
+
+	Raft struct {
+		Endpoints []string `yaml:"endpoints"`
+	}
+
 	StubRouter struct {
 		STUB rpc.STUB `yaml:"stub"`
 	}
