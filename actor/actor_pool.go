@@ -11,6 +11,10 @@ import (
 // actorpool管理,不能动态分配
 // ********************************************************
 type (
+	IActorPool interface {
+		SendActor(head rpc.RpcHead, packet rpc.Packet) bool
+	}
+
 	ActorPool struct {
 		MGR       IActor
 		actorList []IActor

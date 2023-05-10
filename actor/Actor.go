@@ -68,10 +68,6 @@ type (
 		getPool() IActorPool
 	}
 
-	IActorPool interface {
-		SendActor(head rpc.RpcHead, packet rpc.Packet) bool
-	}
-
 	ActorBase struct {
 		actorName string
 		actorType ACTOR_TYPE
