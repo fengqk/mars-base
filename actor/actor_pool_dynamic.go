@@ -71,7 +71,7 @@ func (a *ActorPoolDynamic) GetMgr() IActor {
 	return a.MGR
 }
 
-func (a *ActorPoolDynamic) SendAcotr(head rpc.RpcHead, packet rpc.Packet) bool {
+func (a *ActorPoolDynamic) SendActor(head rpc.RpcHead, packet rpc.Packet) bool {
 	if a.MGR.HasRpc(packet.RpcPacket.FuncName) {
 		if head.Id != 0 {
 			ac := a.GetActor(head.Id)
