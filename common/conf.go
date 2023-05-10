@@ -14,8 +14,8 @@ type (
 		Name         string `yaml:"name"`
 		User         string `yaml:"user"`
 		Password     string `yaml:"password"`
-		MaxIdleConns int32  `yaml:"maxIdleConns"`
-		MaxOpenConns int32  `yaml:"maxOpenConns"`
+		MaxIdleConns int    `yaml:"maxIdleConns"`
+		MaxOpenConns int    `yaml:"maxOpenConns"`
 	}
 
 	Redis struct {

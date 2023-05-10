@@ -7,7 +7,9 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-var POOL *redis.Pool
+var (
+	POOL *redis.Pool
+)
 
 // @title 启动redis, redispo.Pool（连接池）
 func OpenRedisPool(ip, pwd string) error {

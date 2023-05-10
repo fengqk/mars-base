@@ -3,6 +3,7 @@ module github.com/fengqk/mars-base
 go 1.20
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/protobuf v1.5.3
 	github.com/gomodule/redigo v1.8.9
 	github.com/nats-io/nats.go v1.25.0
